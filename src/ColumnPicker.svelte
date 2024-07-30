@@ -1,6 +1,7 @@
 <svelte:options accessors={true} />
 
 <script>
+import { createCollapsible, melt } from '@melt-ui/svelte'
   export let columns = [];
   export let applyFilter;
   export let selectedColumns = [];

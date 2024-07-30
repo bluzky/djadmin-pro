@@ -1,8 +1,12 @@
-const esbuild = require("esbuild");
-const sassPlugin = require("esbuild-plugin-sass");
-const sveltePlugin = require("esbuild-svelte");
-const postCssPlugin = require("esbuild-style-plugin");
-const { copy } = require("esbuild-plugin-copy");
+import * as esbuild from 'esbuild';
+import sveltePlugin from 'esbuild-svelte';
+import sassPlugin from "esbuild-plugin-sass";
+import postCssPlugin from "esbuild-style-plugin";
+import { copy } from "esbuild-plugin-copy";
+import sveltePreprocess from "svelte-preprocess"
+import { preprocessMeltUI, sequence } from "@melt-ui/pp";
+import tailwindcss from "tailwindcss";
+import autoprefixer from "autoprefixer";
 
 const args = process.argv.slice(2);
 const watch = args.includes("--watch");
@@ -12,11 +16,11 @@ const plugins = [
   sassPlugin(),
   postCssPlugin({
     postcss: {
-      plugins: [require("tailwindcss"), require("autoprefixer")],
+      plugins: [tailwindcss, autoprefixer],
     },
   }),
   sveltePlugin({
-    mainFields: ["svelte", "browser", "module", "main"],
+    preprocess: sequence([sveltePreprocess(), preprocessMeltUI()]),
   }),
   copy({
     // this is equal to process.cwd(), which means we use cwd path as base path to resolve `to` path
@@ -44,6 +48,9 @@ let opts = {
     "src/searchTable.js",
     // "src/content.css",
   ],
+  mainFields: ["svelte", "browser", "module", "main"],
+  conditions: ["svelte", "browser"],
+
   bundle: true,
   minify: false,
   outdir: "build",

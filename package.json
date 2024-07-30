@@ -5,6 +5,7 @@
   "main": "index.js",
   "author": "bluzky",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "build": "node scripts/build.js --build",
     "watch": "node scripts/build.js --watch"
@@ -25,6 +26,7 @@
     "postcss": "^8.4.29",
     "prettier": "^3.0.3",
     "prettier-plugin-svelte": "^3.0.3",
-    "svelte": "^4.2.0"
+    "svelte": "^4.2.0",
+    "svelte-preprocess": "^6.0.2"
   }
 }
